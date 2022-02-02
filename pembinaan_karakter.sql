@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2018 at 03:11 AM
--- Server version: 10.1.26-MariaDB
--- PHP Version: 7.1.9
+-- Generation Time: Jan 31, 2022 at 05:07 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -29,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `alumni` (
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `nama_alumni` varchar(30) NOT NULL,
   `th_lulus` year(4) NOT NULL,
   `id_jurusan` tinyint(2) NOT NULL,
@@ -37,13 +36,6 @@ CREATE TABLE `alumni` (
   `id_ortu` int(5) NOT NULL,
   `alamat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `alumni`
---
-
-INSERT INTO `alumni` (`nis`, `nama_alumni`, `th_lulus`, `id_jurusan`, `sub_kelas`, `id_ortu`, `alamat`) VALUES
-('12347', 'Baim', 2017, 2, 'A', 2, 'Bantul, Yogyakarta');
 
 -- --------------------------------------------------------
 
@@ -55,10 +47,10 @@ CREATE TABLE `detail_poin` (
   `id_detail_poin` int(10) NOT NULL,
   `tanggal` date NOT NULL,
   `tahun_ajaran` char(9) NOT NULL,
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `id_pelanggaran` tinyint(3) DEFAULT NULL,
   `id_prestasi` tinyint(3) DEFAULT NULL,
-  `ket` text
+  `ket` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -216,9 +208,10 @@ CREATE TABLE `kat_pelanggaran` (
 --
 
 INSERT INTO `kat_pelanggaran` (`id_kat_pelanggaran`, `nama_kategori`) VALUES
-(1, 'Komponen Kelakuan'),
-(2, 'Komponen Kerapihan'),
-(3, 'Komponen Kerajinan');
+(1, 'Kerajinan'),
+(2, 'Perilaku'),
+(3, 'Pakaian'),
+(4, 'Lingkungan');
 
 -- --------------------------------------------------------
 
@@ -340,20 +333,94 @@ CREATE TABLE `pelanggaran` (
 --
 
 INSERT INTO `pelanggaran` (`id_pelanggaran`, `nama_pelanggaran`, `id_sub_kategori`, `poin`) VALUES
-(1, 'Terlambat hadir di sekolah / keg.PBM lebih dari 5 menit', 1, 2),
-(2, 'Tidak membawa buku paket/pelajaran', 1, 5),
-(3, 'TIdak mengerjakan tugas sesuai dengan batas waktu yang ditentukan', 1, 7),
-(4, 'Mencontek/ menconteki', 1, 10),
-(5, 'Keluar kampus tanpa ijin guru/ karyawan (membolos)', 1, 10),
-(6, 'Makan/ minum/ tidur saat PBM tanpa ijin guru/ karyawan', 1, 10),
-(7, 'Membuat gaduh di kelas', 1, 10),
-(8, 'Tidak mengikuti ekstrakurikuler wajib di sekolah', 1, 10),
-(9, 'Menggunakan media player dan atau alat komunikasi saat PBM', 1, 20),
-(10, 'Membawa/ meminjamkan alat selain yang menunjang PBM', 1, 20),
-(11, 'Tidak mengikuti kegiatan keagamaan tanpa keterangan', 1, 20),
-(12, 'Tidak mengikuti upacara bendera', 1, 10),
-(13, 'Menggunakan Narkoba', 5, 127),
-(16, 'berkata -kata tidak sopan', 2, 50);
+(1, 'Terlambat masuk sekolah < 5 menit', 1, 1),
+(2, 'Terlambat masuk sekolah <= 15 menit', 1, 2),
+(3, 'Terlambat masuk sekolah > 5 menit', 1, 3),
+(4, 'Terlambat masuk izin keluar', 1, 3),
+(5, 'Izin/tidak izin keluar dalam PBM berlangsung dan tidak kembali', 1, 5),
+(6, 'Terlambat masuk setelah jam istirahat 1 (pertama) lebih dari 5 menit\r\n	tanpa seizin dari pengawas sebelumnya', 1, 2),
+(7, 'Terlambat masuk setelah jam istirahat 2  (dua) lebih dari 5 menit dan\r\n	waktu Sholat Dzuhur tanpa izin piket/guru pengajar', 1, 2),
+(8, 'Terlambat masuk karena ijin keluar lebih dari 5 menit', 1, 2),
+(9, 'Siswa tidak masuk karena tanpa keterangan / alpa', 2, 5),
+(10, 'Siswa tidak masuk dengan membuat surat keterangan palsu', 2, 5),
+(11, 'Membolos 1 jam pelajaran', 2, 2),
+(12, 'Siswa putri berhias / memakai perhiasan yang berlebihan', 3, 3),
+(13, 'Siswa putra memakai gelang, kalung', 3, 3),
+(14, 'Siswa putra rambut menutup telinga / kerah baju (RAMBUT GONDRONG)', 3, 5),
+(15, 'Siswa memelihara kuku panjang / kuku dicat / Bertato / Berhena', 3, 5),
+(16, 'Siswa membawa peralatan make up (lipstick) dll', 3, 5),
+(17, 'Siswa / siswi memakai pewarna rambut', 3, 10),
+(18, 'Siswa tidak menjalankan nasehat / perintah guru / Kepsek', 3, 10),
+(19, 'Siswa laki-laki bertindik / (MEMAKAI ANTING)', 3, 15),
+(20, 'Siswa / siswi memakai sandal pada hari sekolah (DISITA)', 3, 5),
+(21, 'Siswi berambut panjang terurai (tidak di ikat)', 3, 2),
+(22, 'Siswa / siswi berlaku kurang sopan terhadap guru/karyawan sekolah', 3, 25),
+(23, 'Siswa berjilbab tetapi melepas jilbab dilingkungan Sekolah', 3, 10),
+(24, 'Siswa yang memakai jilbab tidak sesuai dengan ketentuan Sekolah', 3, 5),
+(25, 'Merusak / menghilangkan barang milik sekolah, guru, dengan sengaja (siswa wajib mengganti)', 4, 15),
+(26, 'Pertentangan dengan teman dan orang lain di dalam atau di luar lingkungan sekolah', 4, 15),
+(27, 'Membuat keributan di kelas atau pada saat jam belajar', 4, 10),
+(28, 'Membawa benda yang tidak ada kaitannya dengan pelajaran tanpa izin dari sekolah', 4, 15),
+(29, 'Merusak sarana dan prasarana sekolah (siswa wajib mengganti)', 4, 10),
+(30, 'Tidak mengikuti kegiatan sekolah (upacara, shalat, dll) yang telah ditentukan / diumumkan sekolah', 4, 10),
+(31, 'Tidak tertib mengikuti pelajaran sekolah (upacara, sholat Dzuhur dll) yang telah ditentukan  / diumumkan sekolah', 4, 5),
+(32, 'Siswa memasuki ruangan kepala sekolah / perpustakaan / computer dll tanpa diizinkan sebelumnya', 4, 10),
+(33, 'Siswa tidur di kelas pada saat belajar', 4, 5),
+(34, 'Siswa tanpa izin membawa handphone ke sekolah baik dalam keadaan aktif Maupun tidak aktif  ke 1 (dikembalikan + panggilan orangtua)', 4, 20),
+(35, 'Siswa tanpa izin membawa handphone ke sekolah baik dalam keadaan aktif Maupun tidak aktif ke 2 ( disita dan tidak di kembalikan lagi sampai Menyelesai', 4, 25),
+(36, 'Siswa terbukti melakukan perekaman foto/video/audio menggunakan Handphone di lingkungan sekolah dan/atau mengunggah ke media sosial/website/grup/dan l', 4, 25),
+(37, 'Tidak membawa buku pelajaran / peralatan sekolah', 4, 5),
+(38, 'Tidak mengerjakan PR (Pekerjaan Rumah)', 4, 5),
+(39, 'Mencuri wajib mengganti', 4, 50),
+(40, 'Memarkirkan sepeda motor/mobil tidak sesuai dengan tempat yang ditentukan', 4, 5),
+(41, 'Masuk/keluar lingkungan sekolah tidak sesuai jalur yang ditentukan', 4, 5),
+(42, 'Berkerumun / bergerombol', 4, 2),
+(43, 'Membawa rokok', 5, 10),
+(44, 'Menghisap rokok di lingkungan sekolah', 5, 15),
+(45, 'Membawa buku, majalah atau kaset terlarang', 6, 25),
+(46, 'Menjual belikan buku, majalah atau kaset terlarang', 6, 25),
+(47, 'Membawa radio, tape recorder, walkman, gitar, MP3, Game Watch dll tanpa seizin Sekolah (disita sekolah)', 6, 10),
+(48, 'Membawa hp foto / video  porno yang ke 1 (disita 1 bulan + Panggilan orangtua)', 6, 50),
+(49, 'Membawa hp foto / video porno yang ke 2 (disita dan tidak di kembalikan sampai Menyelesaikan pendidikan di SMK Negeri 1 Kotabaru)', 6, 75),
+(50, 'Menyalahgunakan laptop', 6, 25),
+(51, 'Semua media elektronik, , flasdisk, Modem, Laptop yang berisi Foto / Video porno', 6, 75),
+(52, 'Membawa senjata tajam tanpa izin sekolah', 7, 30),
+(53, 'Menggunakan senjata tajam untuk mengancam', 7, 75),
+(54, 'Menggunakan senjata tajam untuk melukai', 7, 100),
+(55, 'Membawa obat, minuman terlarang didalam dan diluar sekolah memakai seragam sekolah', 8, 75),
+(56, 'Menggunakan Obat, Minuman terlarang didalam dan diluar sekolah', 8, 75),
+(57, 'Berjudi didalam dan diluar sekolah', 8, 75),
+(58, 'Mengastol/sejenisnnya di lingkungan sekolah', 8, 75),
+(59, 'Mabuk di lingkungan sekolah', 8, 75),
+(60, 'Berkelahi di lingkungan sekolah', 9, 25),
+(61, 'Terlibat perkelahian antar sekolah', 9, 25),
+(62, 'Mengancam Kepala Sekolah, Guru, dan TU', 9, 100),
+(63, 'Terlibat tindak kriminal yang dibuktikan oleh pengadilan', 9, 100),
+(64, 'Siswa berlainan jenis berduaan bergandengan tangan', 10, 15),
+(65, 'Siswa / siswi berkendaraan berpegangan', 10, 15),
+(66, 'Siswa berlainan jenis berduaan berpelukan / berciuman', 10, 75),
+(67, 'Siswa menikah', 10, 100),
+(68, 'Siswa hamil', 10, 100),
+(69, 'Siswa berzina di dalam dan di luar  lingkungan sekolah', 10, 100),
+(70, 'Memakai seragam tidak rapi (tidak memasukkan baju)', 11, 3),
+(71, 'Tidak memakai badge / lokasi sekolah atau tidak menggunakan nama', 11, 3),
+(72, 'Salah memakai seragam', 11, 5),
+(73, 'Siswa memakai ikat pinggang yg tidak sesuai dengan standar sekolah. (DISITA)', 11, 5),
+(74, 'Siswa  memakai sepatu tidak  sesuai dengan aturan TATIB  sekolah.(DISITA)', 11, 5),
+(75, 'Tidak memakai kaos kaki putih (senin sd kamis ) dan hitam (jumat sd sabtu )', 11, 5),
+(76, 'Tidak memakai kelengkapan seragam upacara', 11, 5),
+(77, 'Memakai jaket / rompi /topi  dan sejenisnya didalam lingkungan sekolah (didalam kelas / diluar kelas ) . (DISITA)', 11, 3),
+(78, 'C.9	Siswa putri memakai baju pendek / kentat, rok pendek, rok lipit-lipit / kentat (tidak sesuai standar sekolah)', 11, 10),
+(79, 'Tidak memakai masker', 11, 2),
+(80, 'Merusak lingkungan Taman', 12, 5),
+(81, 'Mengotori, mencoret-coret barang sekolah atau kelas', 12, 10),
+(82, 'Mencuri alat-alat kebersihan sekolah', 12, 25),
+(83, 'Memarkir kendaraan tidak pada tempatnya', 12, 5),
+(84, 'Merusak, mencuri kendaraan, guru, teman .( wajib memperbaiki/mengganti)', 12, 100),
+(85, 'Tidak ikut kerja bakti membersihkan lingkungan sekolah', 12, 15),
+(86, 'Kerjabakti membersihkan lingkungan sekolah tidak membawa alat', 12, 5),
+(87, 'Duduk diatas kendaraan Guru dan Siswa', 12, 5),
+(88, 'Siswa tanpa izin (makan/minum/nongkrong) diluar lingkungan sekolah', 12, 10);
 
 -- --------------------------------------------------------
 
@@ -392,7 +459,7 @@ INSERT INTO `prestasi` (`id_prestasi`, `nama_prestasi`, `poin`) VALUES
 --
 
 CREATE TABLE `siswa` (
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `nama_siswa` varchar(30) NOT NULL,
   `th_angkatan` year(4) NOT NULL,
   `alamat` text NOT NULL,
@@ -455,18 +522,11 @@ INSERT INTO `siswa` (`nis`, `nama_siswa`, `th_angkatan`, `alamat`, `id_kelas`, `
 --
 
 CREATE TABLE `siswa_do` (
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `nama` varchar(30) NOT NULL,
   `th_keluar` year(4) NOT NULL,
   `id_jurusan` tinyint(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `siswa_do`
---
-
-INSERT INTO `siswa_do` (`nis`, `nama`, `th_keluar`, `id_jurusan`) VALUES
-('12348', 'Thinkerbell', 2017, 1);
 
 -- --------------------------------------------------------
 
@@ -485,15 +545,18 @@ CREATE TABLE `sub_kat_pelanggaran` (
 --
 
 INSERT INTO `sub_kat_pelanggaran` (`id_sub_kategori`, `nama_sub_kategori`, `id_kat_pelanggaran`) VALUES
-(1, 'Belajar Mengajar', 1),
-(2, 'Penghinaan', 1),
-(3, 'Sarana Prasarana', 1),
-(4, 'Memakai Perhiasan', 1),
-(5, 'Rokok/ Miras/ Narkoba/ Petasan/ Pornografi', 1),
-(6, 'Pemalsuan/ Pencurian/ Zina/ Pemerasan/ Perjudian/ Kesopanan/ Penyelewengan/ Geng', 1),
-(7, 'Rambut', 2),
-(8, 'Pakaian', 2),
-(9, 'Kehadiran', 3);
+(1, 'Keterlambatan', 1),
+(2, 'Kehadiran', 1),
+(3, 'Kepribadian', 2),
+(4, 'Ketertiban', 2),
+(5, 'Rokok', 2),
+(6, 'Laptop, HP, Flasdisk, Modem, Buku, Majalah, Kaset VCD / DVD Terlarang', 2),
+(7, 'Senjata Tajam', 2),
+(8, 'Obat, Minuman Terlarang, Judi', 2),
+(9, 'Perkelahian', 2),
+(10, 'Pergaulan Bebas di Lingkungan Sekolah', 2),
+(11, 'Pakaian', 3),
+(12, 'Lingkungan', 4);
 
 -- --------------------------------------------------------
 
@@ -503,7 +566,7 @@ INSERT INTO `sub_kat_pelanggaran` (`id_sub_kategori`, `nama_sub_kategori`, `id_k
 
 CREATE TABLE `temp_rapat` (
   `id_temp_rapat` int(12) NOT NULL,
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `jml_poin_pelanggaran` smallint(3) NOT NULL,
   `lihat` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -516,7 +579,7 @@ CREATE TABLE `temp_rapat` (
 
 CREATE TABLE `temp_sp_1` (
   `id_temp_sp_1` int(12) NOT NULL,
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `jml_poin_pelanggaran` smallint(3) NOT NULL,
   `lihat` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -536,7 +599,7 @@ INSERT INTO `temp_sp_1` (`id_temp_sp_1`, `nis`, `jml_poin_pelanggaran`, `lihat`)
 
 CREATE TABLE `temp_sp_2` (
   `id_temp_sp_2` int(12) NOT NULL,
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `jml_poin_pelanggaran` smallint(3) NOT NULL,
   `lihat` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -549,7 +612,7 @@ CREATE TABLE `temp_sp_2` (
 
 CREATE TABLE `temp_sp_3` (
   `id_temp_sp_3` int(12) NOT NULL,
-  `nis` varchar(6) NOT NULL,
+  `nis` varchar(11) NOT NULL,
   `jml_poin_pelanggaran` smallint(3) NOT NULL,
   `lihat` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -571,8 +634,8 @@ CREATE TABLE `th_ajaran` (
 --
 
 INSERT INTO `th_ajaran` (`id_th_ajaran`, `tahun_ajaran`, `sekarang`) VALUES
-(1, '2016/2017', 'N'),
-(2, '2017/2018', 'Y');
+(1, '2021/2022', 'N'),
+(2, '2020/2021', 'Y');
 
 -- --------------------------------------------------------
 
@@ -604,7 +667,7 @@ CREATE TABLE `user` (
   `username` varchar(15) NOT NULL,
   `password` text NOT NULL,
   `nip` char(18) DEFAULT NULL,
-  `nis` varchar(6) DEFAULT NULL,
+  `nis` varchar(11) DEFAULT NULL,
   `id_ortu` int(5) DEFAULT NULL,
   `hak_akses` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -776,7 +839,7 @@ ALTER TABLE `jurusan`
 -- AUTO_INCREMENT for table `kat_pelanggaran`
 --
 ALTER TABLE `kat_pelanggaran`
-  MODIFY `id_kat_pelanggaran` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_kat_pelanggaran` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `kelas`
@@ -794,7 +857,7 @@ ALTER TABLE `orang_tua`
 -- AUTO_INCREMENT for table `pelanggaran`
 --
 ALTER TABLE `pelanggaran`
-  MODIFY `id_pelanggaran` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_pelanggaran` tinyint(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `prestasi`
@@ -806,7 +869,7 @@ ALTER TABLE `prestasi`
 -- AUTO_INCREMENT for table `sub_kat_pelanggaran`
 --
 ALTER TABLE `sub_kat_pelanggaran`
-  MODIFY `id_sub_kategori` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_sub_kategori` tinyint(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `temp_rapat`
