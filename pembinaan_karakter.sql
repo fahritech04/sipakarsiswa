@@ -410,7 +410,7 @@ INSERT INTO `pelanggaran` (`id_pelanggaran`, `nama_pelanggaran`, `id_sub_kategor
 (75, 'Tidak memakai kaos kaki putih (senin sd kamis ) dan hitam (jumat sd sabtu )', 11, 5),
 (76, 'Tidak memakai kelengkapan seragam upacara', 11, 5),
 (77, 'Memakai jaket / rompi /topi  dan sejenisnya didalam lingkungan sekolah (didalam kelas / diluar kelas ) . (DISITA)', 11, 3),
-(78, 'C.9	Siswa putri memakai baju pendek / kentat, rok pendek, rok lipit-lipit / kentat (tidak sesuai standar sekolah)', 11, 10),
+(78, 'Siswa putri memakai baju pendek / kentat, rok pendek, rok lipit-lipit / kentat (tidak sesuai standar sekolah)', 11, 10),
 (79, 'Tidak memakai masker', 11, 2),
 (80, 'Merusak lingkungan Taman', 12, 5),
 (81, 'Mengotori, mencoret-coret barang sekolah atau kelas', 12, 10),
